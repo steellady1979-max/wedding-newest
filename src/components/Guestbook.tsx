@@ -109,7 +109,7 @@ export function Guestbook() {
     <section className="bg-backdrop px-4 py-20 sm:px-6">
       <div className="mx-auto max-w-4xl text-center">
         <Reveal>
-          <SparkleTitle className="font-geo text-2xl text-sage" shimmer={false}>
+          <SparkleTitle className="font-geo text-2xl text-parchment" shimmer={false}>
             სურვილების წიგნი
           </SparkleTitle>
         </Reveal>
@@ -217,7 +217,7 @@ export function Guestbook() {
             <button
               type="button"
               onClick={() => setWriting(true)}
-              className="inline-flex items-center gap-2 rounded-full border border-wine/30 px-7 py-2.5 font-geo text-xs tracking-[0.2em] text-wine transition hover:bg-wine hover:text-parchment"
+              className="inline-flex items-center gap-2 rounded-full border border-parchment/40 px-7 py-2.5 font-geo text-xs tracking-[0.2em] text-parchment transition hover:bg-wine hover:text-parchment hover:border-wine"
             >
               <PenLine className="h-4 w-4" strokeWidth={1.5} />
               სურვილის დაწერა
