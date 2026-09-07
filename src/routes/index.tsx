@@ -8,11 +8,13 @@ import { Guestbook } from "@/components/Guestbook";
 import MusicPlayer from "@/components/MusicPlayer";
 import { supabase } from "@/integrations/supabase/client";
 
+import coupleAsset from "@/assets/couple-new.jpg.asset.json";
+
 const panelImg = "/images/panel.jpg";
 const bowImg = "/images/bow.png";
 const archImg = "/images/arch.jpg";
 const envelopeImg = "/images/envelope.png";
-const coupleImg = "/images/couple-balcony.jpg";
+const coupleImg = coupleAsset.url;
 
 const WEDDING_DATE = new Date("2026-10-10T13:00:00+04:00");
 
@@ -208,24 +210,48 @@ function EnvelopeSection() {
             }`}
           >
             {opened ? (
-              <div className="font-geo text-[0.9rem] leading-[1.95] text-ink/85">
+              <div className="font-geo text-[0.9rem] leading-[1.9] text-ink/85">
                 <Typewriter
                   text="ძვირფასო სტუმრებო,"
                   speed={55}
-                  startDelay={900}
-                  className="font-geo text-[0.9rem] leading-[1.95] text-ink/85"
+                  startDelay={800}
+                  className="font-geo text-[0.9rem] leading-[1.9] text-ink/85"
                 />
                 <Typewriter
-                  text="გეპატიჟებით ჩვენი სიყვარულის დღეზე — ყველაზე მნიშვნელოვან დასაწყისზე. დიდი სიხარულია, რომ ეს დღე თქვენთან ერთად გავიზიაროთ და გპირდებით ულამაზეს მოგონებებს, სითბოს და უსაზღვრო სიხარულს."
-                  speed={28}
-                  startDelay={2000}
-                  className="mt-2 font-geo text-[0.9rem] leading-[1.95] text-ink/85"
-                />
-                <Typewriter
-                  text="გელოდებით — გიგა & ნინი"
+                  text="ეს დღეც დადგა!"
                   speed={55}
-                  startDelay={7800}
-                  className="mt-4 font-geo text-[0.9rem] text-ink/70"
+                  startDelay={1800}
+                  className="mt-2 font-geo text-[0.9rem] leading-[1.9] text-ink/85"
+                />
+                <Typewriter
+                  text="გიწვევთ ჩვენი სიყვარულის ისტორიის დაგვირგვინების დღეს ჩვენს ქორწილში."
+                  speed={32}
+                  startDelay={2700}
+                  className="mt-2 font-geo text-[0.9rem] leading-[1.9] text-ink/85"
+                />
+                <Typewriter
+                  text="ამ დიდი სიხარულის თქვენთვის გაზიარება ყველაფერს კიდევ უფრო განსაკუთრებულად აქცევს."
+                  speed={32}
+                  startDelay={4900}
+                  className="mt-2 font-geo text-[0.9rem] leading-[1.9] text-ink/85"
+                />
+                <Typewriter
+                  text="გვსურს გახდეთ ამ ულამაზესი დღის ნაწილი."
+                  speed={32}
+                  startDelay={7900}
+                  className="mt-2 font-geo text-[0.9rem] leading-[1.9] text-ink/85"
+                />
+                <Typewriter
+                  text="გპირდებით ულამაზეს მოგონებებს, სითბოსა და უსაზღვრო სიხარულს."
+                  speed={32}
+                  startDelay={9100}
+                  className="mt-2 font-geo text-[0.9rem] leading-[1.9] text-ink/85"
+                />
+                <Typewriter
+                  text="გიგა & ნინი"
+                  speed={55}
+                  startDelay={11000}
+                  className="mt-4 font-geo text-[0.95rem] text-wine"
                 />
               </div>
             ) : (
