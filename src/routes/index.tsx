@@ -6,7 +6,6 @@ import { Typewriter } from "@/components/Typewriter";
 import { Schedule } from "@/components/Schedule";
 import { Guestbook } from "@/components/Guestbook";
 import MusicPlayer from "@/components/MusicPlayer";
-import { Ban, Sparkles } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
 const panelImg = "/images/panel.jpg";
@@ -15,19 +14,19 @@ const archImg = "/images/arch.jpg";
 const envelopeImg = "/images/envelope.png";
 const coupleImg = "/images/couple-balcony.jpg";
 
-const WEDDING_DATE = new Date("2026-09-13T15:00:00+04:00");
+const WEDDING_DATE = new Date("2026-10-10T13:00:00+04:00");
 
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "თეკლა & ზაური — ქორწილის მოწვევა" },
+      { title: "გიგა & ნინი — ქორწილის მოწვევა" },
       {
         name: "description",
         content:
-          "თეკლა და ზაური გეპატიჟებიან 13 სექტემბერს, 2026 — განრიგი, დრესკოდი, ლოკაცია და RSVP.",
+          "გიგა და ნინი გეპატიჟებიან 10 ოქტომბერს, 2026 — განრიგი, ლოკაცია და RSVP.",
       },
-      { property: "og:title", content: "თეკლა & ზაური — 13 სექტემბერი, 2026" },
+      { property: "og:title", content: "გიგა & ნინი — 10 ოქტომბერი, 2026" },
       {
         property: "og:description",
         content: "ინტერაქტიული ქორწილის მოწვევა — განრიგი, ლოკაცია და RSVP.",
@@ -46,7 +45,7 @@ function Invitation() {
 
   return (
     <main className="relative min-h-screen bg-backdrop">
-      <h1 className="sr-only">თეკლა და ზაური — ქორწილის მოწვევა, 13 სექტემბერი, 2026</h1>
+      <h1 className="sr-only">გიგა და ნინი — ქორწილის მოწვევა, 10 ოქტომბერი, 2026</h1>
 
       <div
         className={`transition-all duration-[1600ms] ease-out ${
@@ -56,7 +55,6 @@ function Invitation() {
         <Hero />
         <EnvelopeSection />
         <Schedule />
-        <Details />
         <Guestbook />
         <CoupleImage />
         <Rsvp />
@@ -134,14 +132,14 @@ function Hero() {
       />
       <div className="relative z-10 flex flex-col items-center px-8 text-center">
         <SparkleTitle as="p" shimmer={false} className="font-geo text-[13vw] leading-[1.1] sm:text-6xl">
-          თეკლა
+          გიგა
         </SparkleTitle>
         <p className="my-1 font-geo text-2xl text-ink/70">&amp;</p>
         <SparkleTitle as="p" shimmer={false} className="font-geo text-[13vw] leading-[1.1] sm:text-6xl">
-          ზაური
+          ნინი
         </SparkleTitle>
         <div className="mt-8 rounded-full bg-parchment/70 px-6 py-3 backdrop-blur-[2px]">
-          <p className="font-geo text-sm tracking-[0.3em] text-ink/85">13 სექტემბერი, 2026</p>
+          <p className="font-geo text-sm tracking-[0.3em] text-ink/85">10 ოქტომბერი, 2026</p>
         </div>
 
         <Countdown />
@@ -224,7 +222,7 @@ function EnvelopeSection() {
                   className="mt-2 font-geo text-[0.9rem] leading-[1.95] text-ink/85"
                 />
                 <Typewriter
-                  text="გელოდებით — თეკლა & ზაური"
+                  text="გელოდებით — გიგა & ნინი"
                   speed={55}
                   startDelay={7800}
                   className="mt-4 font-geo text-[0.9rem] text-ink/70"
@@ -282,57 +280,6 @@ function EnvelopeSection() {
 }
 
 
-function Card({ title, children }: { title: string; children: React.ReactNode }) {
-  return (
-    <div className="rounded-2xl border border-ink/10 bg-parchment/95 p-7 shadow-soft">
-      <SparkleTitle className="font-geo text-lg tracking-[0.15em]">{title}</SparkleTitle>
-      <div className="mt-3 font-geo text-sm leading-[1.9] text-ink/75">{children}</div>
-    </div>
-  );
-}
-
-const DRESS = [
-  { icon: Sparkles, label: "სტილი", text: "ელეგანტური & ფერადი." },
-  {
-    icon: Ban,
-    label: "გამონაკლისი",
-    text: "გთხოვთ, არ ჩაიცვათ შინდისფერი (ბურგუნდი).",
-  },
-];
-
-
-function Details() {
-  return (
-    <section className="bg-backdrop px-6 py-20">
-      <div className="mx-auto grid max-w-3xl gap-6">
-        <Reveal>
-          <Card title="დრესკოდი">
-            <ul className="grid gap-4">
-              {DRESS.map(({ icon: Icon, label, text }) => (
-                <li key={label} className="flex gap-3">
-                  <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-wine/20 bg-wine/10">
-                    <Icon className="h-4 w-4 text-wine" strokeWidth={1.5} />
-                  </span>
-                  <span>
-                    <span className="block font-geo text-xs tracking-[0.2em] text-ink/55">
-                      {label}
-                    </span>
-                    <span className="text-ink/80">{text}</span>
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </Card>
-        </Reveal>
-
-
-
-
-      </div>
-    </section>
-  );
-}
-
 function Rsvp() {
   const [sent, setSent] = useState(false);
   return (
@@ -368,7 +315,7 @@ function CoupleImage() {
         <figure className="mx-auto max-w-none sm:max-w-xl">
           <img
             src={coupleImg}
-            alt="აკვარელით დახატული თეკლა და ზაური იტალიურ ბალკონზე"
+            alt="აკვარელით დახატული გიგა და ნინი იტალიურ ბალკონზე"
             loading="lazy"
             className="w-full rounded-none border-y border-ink/10 shadow-soft sm:rounded-2xl sm:border"
           />
