@@ -68,7 +68,7 @@ export function Schedule() {
                       <div className="mt-4 flex justify-center -ml-[3.25rem] sm:ml-0">
                         <img
                           src={image}
-                          alt="შატო გელათის საქორწილო ცერემონიის აკვარელი"
+                          alt={alt}
                           loading="lazy"
                           className="mx-auto w-full max-w-sm rounded-none border-y border-ink/10 shadow-soft sm:max-w-md sm:rounded-xl sm:border"
                         />
