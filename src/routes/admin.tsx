@@ -8,7 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 export const Route = createFileRoute("/admin")({
   head: () => ({
     meta: [
-      { title: "ადმინი — თეკლა & ზაური RSVP & სურვილები" },
+      { title: "ადმინი — გიგა & ნინი RSVP & სურვილები" },
       { name: "description", content: "დახურული გვერდი ქორწილის მონაცემების სანახავად." },
       { name: "robots", content: "noindex, nofollow" },
       { property: "og:title", content: "ადმინი — RSVP & სურვილები" },
@@ -105,7 +105,7 @@ function Admin() {
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.setAttribute("href", url);
-    link.setAttribute("download", `Tekla_Zauri_Guests_Wishes_${new Date().toISOString().split("T")[0]}.csv`);
+    link.setAttribute("download", `Giga_Nini_Guests_Wishes_${new Date().toISOString().split("T")[0]}.csv`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
