@@ -21,8 +21,8 @@ const ITEMS = [
     icon: PenLine,
     title: "ხელის მოწერა — კოლხეთის ეროვნული პარკი",
     map: "https://maps.app.goo.gl/b8gDZjxaj6KcoKEL9",
-    image: null as string | null,
-    alt: "",
+    image: shuaguliImg,
+    alt: "ხელის მოწერის ცერემონია, აკვარელი",
   },
   {
     time: "19:00",
