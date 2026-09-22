@@ -8,7 +8,7 @@ import { Guestbook } from "@/components/Guestbook";
 import MusicPlayer from "@/components/MusicPlayer";
 import { supabase } from "@/integrations/supabase/client";
 
-import coupleAsset from "@/assets/couple-new.jpg.asset.json";
+import coupleAsset from "@/assets/couple-giorgi-victoria.jpg.asset.json";
 
 const panelImg = "/images/panel.jpg";
 const bowImg = "/images/bow.png";
@@ -16,19 +16,19 @@ const archImg = "/images/arch.jpg";
 const envelopeImg = "/images/envelope.png";
 const coupleImg = coupleAsset.url;
 
-const WEDDING_DATE = new Date("2026-10-10T13:00:00+04:00");
+const WEDDING_DATE = new Date("2026-10-04T16:00:00+04:00");
 
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "გიგა & ნინი — ქორწილის მოწვევა" },
+      { title: "გიორგი & ვიქტორია — ქორწილის მოწვევა" },
       {
         name: "description",
         content:
-          "გიგა და ნინი გეპატიჟებიან 10 ოქტომბერს, 2026 — განრიგი, ლოკაცია და RSVP.",
+          "გიორგი და ვიქტორია გეპატიჟებიან 4 ოქტომბერს, 2026 — განრიგი, ლოკაცია და RSVP.",
       },
-      { property: "og:title", content: "გიგა & ნინი — 10 ოქტომბერი, 2026" },
+      { property: "og:title", content: "გიორგი & ვიქტორია — 4 ოქტომბერი, 2026" },
       {
         property: "og:description",
         content: "ინტერაქტიული ქორწილის მოწვევა — განრიგი, ლოკაცია და RSVP.",
