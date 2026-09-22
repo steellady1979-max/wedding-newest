@@ -1,9 +1,11 @@
 import { Reveal } from "./Reveal";
 import { SparkleTitle } from "./SparkleTitle";
 import { Church, MapPin, PenLine, UtensilsCrossed } from "lucide-react";
+import shuaguliAsset from "@/assets/shuaguli.jpg.asset.json";
 
 const potiImg = "/__l5e/assets-v1/f303af79-1d4b-4079-9fee-399bbfa0c73d/poti-cathedral.jpg";
 const bagrationiImg = "/__l5e/assets-v1/3ef1f9c0-4146-46fe-8cd5-64190b4ce890/bagrationi.jpg";
+const shuaguliImg = shuaguliAsset.url;
 
 const ITEMS = [
   {
@@ -19,8 +21,8 @@ const ITEMS = [
     icon: PenLine,
     title: "ხელის მოწერა — კოლხეთის ეროვნული პარკი",
     map: "https://maps.app.goo.gl/b8gDZjxaj6KcoKEL9",
-    image: null as string | null,
-    alt: "",
+    image: shuaguliImg,
+    alt: "ხელის მოწერის ცერემონია, აკვარელი",
   },
   {
     time: "19:00",
