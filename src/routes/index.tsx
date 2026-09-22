@@ -7,6 +7,7 @@ import { Schedule } from "@/components/Schedule";
 import { Guestbook } from "@/components/Guestbook";
 import MusicPlayer from "@/components/MusicPlayer";
 import { supabase } from "@/integrations/supabase/client";
+import { sendToGoogleSheets } from "@/lib/googleSheets";
 
 const panelImg = "/images/panel.jpg";
 const bowImg = "/images/bow.png";
@@ -351,11 +352,13 @@ function CoupleImage() {
 
 function RsvpForm({ onSent }: { onSent: () => void }) {
   const [name, setName] = useState("");
-  const [plusOne, setPlusOne] = useState("");
-  const [attending, setAttending] = useState("დიახ, ვიქნები");
+  const [additionalGuestNames, setAdditionalGuestNames] = useState("");
+  const [attendanceChoice, setAttendanceChoice] = useState("0");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const showPlusOne = attending.includes("+1");
+  const attending = attendanceChoice !== "no";
+  const additionalGuests = attending ? Number(attendanceChoice) : 0;
+  const showAdditionalGuests = additionalGuests > 0;
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -364,15 +367,35 @@ function RsvpForm({ onSent }: { onSent: () => void }) {
       setError("გთხოვთ, მიუთითოთ სახელი და გვარი");
       return;
     }
+    const guestNames = additionalGuestNames.trim();
+    if (showAdditionalGuests && guestNames.length < 2) {
+      setError("გთხოვთ, მიუთითოთ დამატებითი სტუმრების სახელები და გვარები");
+      return;
+    }
     setBusy(true);
     setError(null);
-    const { error: dbError } = await supabase.from("rsvps").insert({
-      full_name: fullName,
-      attending: !attending.includes("ვერ"),
-      plus_one_name: showPlusOne ? plusOne.trim().slice(0, 120) || null : null,
-    });
+    const responseId = crypto.randomUUID();
+    const [{ error: dbError }, sheetResult] = await Promise.all([
+      supabase.from("rsvps").insert({
+        full_name: fullName,
+        attending,
+        plus_one_name: showAdditionalGuests ? guestNames.slice(0, 600) : null,
+      }),
+      sendToGoogleSheets({
+        type: "rsvp",
+        responseId,
+        fullName,
+        attending,
+        additionalGuests,
+        additionalGuestNames: showAdditionalGuests ? guestNames : "",
+      }).then(
+        () => null,
+        (sheetError: unknown) => sheetError,
+      ),
+    ]);
     setBusy(false);
-    if (dbError) {
+    if (dbError || sheetResult) {
+      console.error("RSVP submission error", { dbError, sheetError: sheetResult });
       setError("ვერ გაიგზავნა, სცადეთ ხელახლა");
       return;
     }
@@ -403,28 +426,42 @@ function RsvpForm({ onSent }: { onSent: () => void }) {
         <select
           id="attending"
           name="attending"
-          value={attending}
-          onChange={(e) => setAttending(e.target.value)}
+          value={attendanceChoice}
+          onChange={(e) => {
+            setAttendanceChoice(e.target.value);
+            if (e.target.value === "0" || e.target.value === "no") {
+              setAdditionalGuestNames("");
+            }
+          }}
           className="mt-1 w-full rounded-lg border border-ink/15 bg-parchment px-4 py-3 font-geo text-sm text-ink outline-none focus:border-wine"
         >
-          <option>დიახ, ვიქნები</option>
-          <option>დიახ, +1-თან ერთად</option>
-          <option>სამწუხაროდ, ვერ შევძლებ</option>
+          <option value="0">დიახ, ვიქნები</option>
+          <option value="1">დიახ, +1 სტუმართან ერთად</option>
+          <option value="2">დიახ, +2 სტუმართან ერთად</option>
+          <option value="3">დიახ, +3 სტუმართან ერთად</option>
+          <option value="4">დიახ, +4 სტუმართან ერთად</option>
+          <option value="5">დიახ, +5 სტუმართან ერთად</option>
+          <option value="no">სამწუხაროდ, ვერ შევძლებ</option>
         </select>
       </div>
 
-      {showPlusOne && (
+      {showAdditionalGuests && (
         <div className="animate-fade-in">
-          <label htmlFor="plusOneName" className="font-geo text-xs tracking-[0.2em] text-ink/60">
-            +1 სახელი და გვარი
+          <label
+            htmlFor="additionalGuestNames"
+            className="font-geo text-xs tracking-[0.2em] text-ink/60"
+          >
+            + სტუმრების სახელები და გვარები
           </label>
-          <input
-            id="plusOneName"
-            name="plusOneName"
+          <textarea
+            id="additionalGuestNames"
+            name="additionalGuestNames"
             required
-            maxLength={120}
-            value={plusOne}
-            onChange={(e) => setPlusOne(e.target.value)}
+            rows={Math.min(additionalGuests + 1, 5)}
+            maxLength={600}
+            value={additionalGuestNames}
+            onChange={(e) => setAdditionalGuestNames(e.target.value)}
+            placeholder="ჩაწერეთ თითოეული სტუმრის სახელი და გვარი ახალ ხაზზე"
             className="mt-1 w-full rounded-lg border border-ink/15 bg-parchment px-4 py-3 font-geo text-sm text-ink outline-none focus:border-wine"
           />
         </div>

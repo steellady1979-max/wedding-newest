@@ -3,6 +3,7 @@ import { ChevronLeft, ChevronRight, PenLine } from "lucide-react";
 import { Reveal } from "@/components/Reveal";
 import { SparkleTitle } from "@/components/SparkleTitle";
 import { supabase } from "@/integrations/supabase/client";
+import { sendToGoogleSheets } from "@/lib/googleSheets";
 
 type Entry = { text: string; name: string };
 
@@ -52,12 +53,20 @@ export function Guestbook() {
     setLoading(true);
     try {
       console.log("Sending data to Supabase...", { nameInput, textInput });
-      const { error } = await supabase
-        .from("wishes")
-        .insert([{ full_name: nameInput.trim(), message: textInput.trim() }]);
+      const fullName = nameInput.trim();
+      const message = textInput.trim();
+      const responseId = crypto.randomUUID();
+      const [{ error }, sheetResult] = await Promise.all([
+        supabase.from("wishes").insert([{ full_name: fullName, message }]),
+        sendToGoogleSheets({ type: "wish", responseId, fullName, message }).then(
+          () => null,
+          (sheetError: unknown) => sheetError,
+        ),
+      ]);
 
-      if (error) {
-        alert("ბაზის შეცდომა: " + error.message);
+      if (error || sheetResult) {
+        console.error("Wish submission error", { dbError: error, sheetError: sheetResult });
+        alert("ვერ გაიგზავნა, სცადეთ ხელახლა");
         setLoading(false);
         return;
       }
