@@ -80,7 +80,7 @@ export function Guestbook() {
       <div className="mx-auto max-w-4xl text-center">
         <Reveal>
           <SparkleTitle
-            className="font-geo text-2xl text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.55)]"
+            className="font-geo text-2xl !text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.65)]"
             shimmer={false}
           >
             სურვილების წიგნი
@@ -118,7 +118,7 @@ export function Guestbook() {
             type="button"
             onClick={() => turn(-1)}
             aria-label="წინა გვერდი"
-            className="flex h-10 w-10 items-center justify-center rounded-full border border-wine/25 text-wine transition hover:bg-wine hover:text-parchment"
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-white/45 text-white shadow-sm transition hover:border-white/80 hover:bg-white/15"
           >
             <ChevronLeft className="h-5 w-5" strokeWidth={1.5} />
           </button>
@@ -135,7 +135,7 @@ export function Guestbook() {
                   turn(i > page ? 1 : -1);
                 }}
                 className={`h-1.5 rounded-full transition-all ${
-                  i === page ? "w-6 bg-wine" : "w-1.5 bg-ink/20"
+                  i === page ? "w-6 bg-white" : "w-1.5 bg-white/30"
                 }`}
               />
             ))}
@@ -145,7 +145,7 @@ export function Guestbook() {
             type="button"
             onClick={() => turn(1)}
             aria-label="შემდეგი გვერდი"
-            className="flex h-10 w-10 items-center justify-center rounded-full border border-wine/25 text-wine transition hover:bg-wine hover:text-parchment"
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-white/45 text-white shadow-sm transition hover:border-white/80 hover:bg-white/15"
           >
             <ChevronRight className="h-5 w-5" strokeWidth={1.5} />
           </button>
@@ -177,14 +177,14 @@ export function Guestbook() {
                   type="button"
                   disabled={loading}
                   onClick={() => void handleSendClick()}
-                  className="rounded-full bg-wine px-7 py-2.5 font-geo text-xs tracking-[0.2em] text-parchment transition hover:opacity-90 disabled:opacity-50"
+                  className="rounded-full border border-white/60 bg-wine px-7 py-2.5 font-geo text-xs tracking-[0.2em] text-white shadow-sm transition hover:border-white hover:bg-wine/85 disabled:opacity-50"
                 >
                   {loading ? "იგზავნება..." : "ჩაწერა"}
                 </button>
                 <button
                   type="button"
                   onClick={() => setWriting(false)}
-                  className="rounded-full border border-ink/20 px-7 py-2.5 font-geo text-xs tracking-[0.2em] text-ink/70 transition hover:bg-ink/5"
+                  className="rounded-full border border-white/60 bg-white/10 px-7 py-2.5 font-geo text-xs tracking-[0.2em] text-white shadow-sm transition hover:border-white hover:bg-white/20"
                 >
                   გაუქმება
                 </button>
@@ -194,7 +194,7 @@ export function Guestbook() {
             <button
               type="button"
               onClick={() => setWriting(true)}
-              className="inline-flex items-center gap-2 rounded-full border border-parchment/40 px-7 py-2.5 font-geo text-xs tracking-[0.2em] text-parchment transition hover:bg-wine hover:text-parchment hover:border-wine"
+              className="inline-flex items-center gap-2 rounded-full border border-white/50 px-7 py-2.5 font-geo text-xs tracking-[0.2em] text-white shadow-sm transition hover:border-white hover:bg-white/15"
             >
               <PenLine className="h-4 w-4" strokeWidth={1.5} />
               სურვილის დაწერა
