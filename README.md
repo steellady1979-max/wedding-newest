@@ -14,9 +14,9 @@ After loading, please make the following updates:
 
    - In the wedding schedule/timeline section, update or add the entry for 18:00: "18:00 - ვახშამი".
 
-3. RSVP & SIMPLE ADMIN PANEL:
+3. RSVP & GOOGLE SHEETS:
 
-   - Connect the RSVP form to Supabase (or set up the database table `rsvps` / `guests`).
+   - Send RSVP and guestbook responses directly to the shared Google Sheet.
 
    - Collect the following guest responses:
 
@@ -26,9 +26,9 @@ After loading, please make the following updates:
 
      * Plus One Full Name (+1-ის სახელი და გვარი, if attending)
 
-   - Create a simple protected `/admin` route with a password lock.
+   - Use the shared Google Sheet as the response list instead of an admin route.
 
-   - On the `/admin` page, render a clean dashboard/table showing:
+   - The sheet includes:
 
      * Who is attending
 

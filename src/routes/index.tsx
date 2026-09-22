@@ -6,7 +6,6 @@ import { Typewriter } from "@/components/Typewriter";
 import { Schedule } from "@/components/Schedule";
 import { Guestbook } from "@/components/Guestbook";
 import MusicPlayer from "@/components/MusicPlayer";
-import { supabase } from "@/integrations/supabase/client";
 import { sendToGoogleSheets } from "@/lib/googleSheets";
 
 const panelImg = "/images/panel.jpg";
@@ -375,27 +374,22 @@ function RsvpForm({ onSent }: { onSent: () => void }) {
     setBusy(true);
     setError(null);
     const responseId = crypto.randomUUID();
-    const [{ error: dbError }, sheetResult] = await Promise.all([
-      supabase.from("rsvps").insert({
-        full_name: fullName,
-        attending,
-        plus_one_name: showAdditionalGuests ? guestNames.slice(0, 600) : null,
-      }),
-      sendToGoogleSheets({
+    let sheetError: unknown = null;
+    try {
+      await sendToGoogleSheets({
         type: "rsvp",
         responseId,
         fullName,
         attending,
         additionalGuests,
         additionalGuestNames: showAdditionalGuests ? guestNames : "",
-      }).then(
-        () => null,
-        (sheetError: unknown) => sheetError,
-      ),
-    ]);
+      });
+    } catch (error) {
+      sheetError = error;
+    }
     setBusy(false);
-    if (dbError || sheetResult) {
-      console.error("RSVP submission error", { dbError, sheetError: sheetResult });
+    if (sheetError) {
+      console.error("RSVP submission error", sheetError);
       setError("ვერ გაიგზავნა, სცადეთ ხელახლა");
       return;
     }

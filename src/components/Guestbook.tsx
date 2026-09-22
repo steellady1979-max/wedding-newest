@@ -2,7 +2,6 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight, PenLine } from "lucide-react";
 import { Reveal } from "@/components/Reveal";
 import { SparkleTitle } from "@/components/SparkleTitle";
-import { supabase } from "@/integrations/supabase/client";
 import { sendToGoogleSheets } from "@/lib/googleSheets";
 
 type Entry = { text: string; name: string };
@@ -20,30 +19,6 @@ export function Guestbook() {
 
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const fetchWishes = async () => {
-    try {
-      const { data, error } = await supabase
-        .from("wishes")
-        .select("full_name, message, created_at")
-        .order("created_at", { ascending: true });
-
-      if (error) {
-        console.error("Supabase fetch error:", error.message);
-        return;
-      }
-
-      if (data && data.length > 0) {
-        setEntries(data.map(item => ({ name: item.full_name, text: item.message })));
-      }
-    } catch (err) {
-      console.error("Fetch exception:", err);
-    }
-  };
-
-  useEffect(() => {
-    void fetchWishes();
-  }, []);
-
   const handleSendClick = async () => {
     if (!nameInput.trim() || !textInput.trim()) {
       alert("გთხოვთ შეავსოთ ორივე ველი!");
@@ -52,30 +27,16 @@ export function Guestbook() {
 
     setLoading(true);
     try {
-      console.log("Sending data to Supabase...", { nameInput, textInput });
       const fullName = nameInput.trim();
       const message = textInput.trim();
       const responseId = crypto.randomUUID();
-      const [{ error }, sheetResult] = await Promise.all([
-        supabase.from("wishes").insert([{ full_name: fullName, message }]),
-        sendToGoogleSheets({ type: "wish", responseId, fullName, message }).then(
-          () => null,
-          (sheetError: unknown) => sheetError,
-        ),
-      ]);
-
-      if (error || sheetResult) {
-        console.error("Wish submission error", { dbError: error, sheetError: sheetResult });
-        alert("ვერ გაიგზავნა, სცადეთ ხელახლა");
-        setLoading(false);
-        return;
-      }
+      await sendToGoogleSheets({ type: "wish", responseId, fullName, message });
 
       alert("სურვილი წარმატებით გაიგზავნა!");
+      setEntries((current) => [...current, { name: fullName, text: message }]);
       setNameInput("");
       setTextInput("");
       setWriting(false);
-      await fetchWishes();
     } catch (err: any) {
       alert("კრიტიკული შეცდომა: " + (err?.message || "უცნობი"));
     } finally {
