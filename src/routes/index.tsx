@@ -8,13 +8,11 @@ import { Guestbook } from "@/components/Guestbook";
 import MusicPlayer from "@/components/MusicPlayer";
 import { supabase } from "@/integrations/supabase/client";
 
-import coupleAsset from "@/assets/couple-giorgi-victoria.jpg.asset.json";
-
 const panelImg = "/images/panel.jpg";
 const bowImg = "/images/bow.png";
 const archImg = "/images/arch.jpg";
 const envelopeImg = "/images/envelope.png";
-const coupleImg = coupleAsset.url;
+const coupleImg = "/images/couple-giorgi-victoria.jpg";
 
 const WEDDING_DATE = new Date("2026-10-04T16:00:00+04:00");
 
