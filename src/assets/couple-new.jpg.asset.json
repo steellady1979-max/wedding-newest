@@ -1,11 +1,11 @@
 {
-  "version": 1,
   "asset_id": "81afee78-6862-41d0-a25a-a52d0afe3a80",
-  "project_id": "04de0d42-843e-440a-be7f-af46350d7b7d",
-  "url": "/__l5e/assets-v1/81afee78-6862-41d0-a25a-a52d0afe3a80/couple-balcony.jpg",
-  "r2_key": "a/v1/04de0d42-843e-440a-be7f-af46350d7b7d/81afee78-6862-41d0-a25a-a52d0afe3a80/couple-balcony.jpg",
-  "original_filename": "couple-balcony.jpg",
-  "size": 894678,
   "content_type": "image/jpeg",
-  "created_at": "2026-09-07T10:27:13Z"
+  "created_at": "2026-09-07T10:27:13Z",
+  "original_filename": "couple-balcony.jpg",
+  "project_id": "bfb4c45f-3b37-48bf-92b5-9b90dcaa205c",
+  "r2_key": "a/v1/bfb4c45f-3b37-48bf-92b5-9b90dcaa205c/81afee78-6862-41d0-a25a-a52d0afe3a80/couple-balcony.jpg",
+  "size": 894678,
+  "url": "/__l5e/assets-v1/81afee78-6862-41d0-a25a-a52d0afe3a80/couple-balcony.jpg",
+  "version": 1
 }
