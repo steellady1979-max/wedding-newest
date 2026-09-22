@@ -12,7 +12,7 @@ export function Guestbook() {
   const [flip, setFlip] = useState<null | { dir: 1 | -1; from: number; to: number }>(null);
   const [paused, setPaused] = useState(false);
   const [writing, setWriting] = useState(false);
-  
+
   const [nameInput, setNameInput] = useState("");
   const [textInput, setTextInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -79,7 +79,10 @@ export function Guestbook() {
     <section className="bg-backdrop px-4 py-20 sm:px-6">
       <div className="mx-auto max-w-4xl text-center">
         <Reveal>
-          <SparkleTitle className="font-geo text-2xl text-parchment" shimmer={false}>
+          <SparkleTitle
+            className="font-geo text-2xl text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.55)]"
+            shimmer={false}
+          >
             სურვილების წიგნი
           </SparkleTitle>
         </Reveal>
@@ -150,14 +153,18 @@ export function Guestbook() {
 
         <div className="mt-8">
           {writing ? (
-            <div className="mx-auto grid max-w-md gap-3 text-left">
+            <div className="mx-auto grid max-w-2xl gap-3 text-left">
               <textarea
-                rows={3}
+                rows={8}
+                maxLength={50000}
                 value={textInput}
                 onChange={(e) => setTextInput(e.target.value)}
                 placeholder="თქვენი სურვილი..."
-                className="w-full rounded-lg border border-ink/15 bg-parchment px-4 py-3 font-geo text-sm text-ink outline-none focus:border-wine"
+                className="min-h-56 w-full resize-y rounded-lg border border-ink/15 bg-parchment px-4 py-3 font-geo text-sm leading-relaxed text-ink outline-none focus:border-wine"
               />
+              <p className="-mt-1 text-right font-geo text-[0.7rem] text-parchment/70">
+                {textInput.length.toLocaleString("ka-GE")} / 50 000
+              </p>
               <input
                 type="text"
                 value={nameInput}
@@ -211,7 +218,13 @@ function PageBody({ entry }: { entry: Entry | undefined }) {
   if (!entry) return <span className="book-empty" aria-hidden />;
   return (
     <>
-      <p className="font-script text-[clamp(1rem,2.4vw,1.35rem)] leading-relaxed text-ink/85">
+      <p
+        className={`max-h-60 overflow-y-auto whitespace-pre-wrap break-words font-script leading-relaxed text-ink/85 ${
+          entry.text.length > 500
+            ? "text-[clamp(0.75rem,1.7vw,0.95rem)]"
+            : "text-[clamp(1rem,2.4vw,1.35rem)]"
+        }`}
+      >
         “{entry.text}”
       </p>
       <p className="mt-4 font-script text-lg text-wine">— {entry.name}</p>

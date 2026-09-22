@@ -1,148 +1,72 @@
 import { useEffect, useRef, useState } from "react";
 import { Volume2, VolumeX } from "lucide-react";
 
-const VIDEO_ID = "cE6wxDqdOV0";
-
-declare global {
-  interface Window {
-    YT?: any;
-    onYouTubeIframeAPIReady?: () => void;
-  }
-}
+const MUSIC_SRC = "/audio/vampire-weekend-step.mp3";
 
 export default function MusicPlayer() {
-  const playerRef = useRef<any>(null);
-  const [ready, setReady] = useState(false);
-  const [muted, setMuted] = useState(true);
+  const audioRef = useRef<HTMLAudioElement>(null);
+  const [playing, setPlaying] = useState(false);
 
   useEffect(() => {
-    let cancelled = false;
-    let cleanupGestures = () => {};
+    const audio = audioRef.current;
+    if (!audio) return;
+    audio.volume = 0.45;
 
-    function startMuted() {
-      const p = playerRef.current;
-      if (!p) return;
-      try {
-        p.mute?.();
-        p.setVolume?.(45);
-        p.playVideo?.();
-      } catch {
-        /* noop */
+    const playOnFirstGesture = (event: Event) => {
+      if (event.target instanceof Element && event.target.closest("[data-music-control]")) {
+        cleanup();
+        return;
       }
-    }
+      void audio
+        .play()
+        .then(() => setPlaying(true))
+        .catch(() => undefined);
+      cleanup();
+    };
 
-    function unmuteOnGesture() {
-      const p = playerRef.current;
-      if (!p) return;
-      try {
-        p.unMute?.();
-        p.setVolume?.(45);
-        p.playVideo?.();
-        setMuted(false);
-      } catch {
-        /* noop */
-      }
-      cleanupGestures();
-    }
-
-    function createPlayer() {
-      if (cancelled || playerRef.current || !window.YT?.Player) return;
-      playerRef.current = new window.YT.Player("hidden-yt-audio", {
-        videoId: VIDEO_ID,
-        playerVars: {
-          autoplay: 1,
-          mute: 1,
-          controls: 0,
-          playsinline: 1,
-          loop: 1,
-          playlist: VIDEO_ID,
-        },
-        events: {
-          onReady: () => {
-            if (cancelled) return;
-            setReady(true);
-            startMuted();
-
-            const events: (keyof WindowEventMap)[] = [
-              "pointerdown",
-              "touchstart",
-              "keydown",
-              "scroll",
-            ];
-            events.forEach((ev) =>
-              window.addEventListener(ev, unmuteOnGesture, { once: true, passive: true }),
-            );
-            cleanupGestures = () => {
-              events.forEach((ev) => window.removeEventListener(ev, unmuteOnGesture));
-            };
-          },
-        },
-      });
-    }
-
-    if (window.YT?.Player) {
-      createPlayer();
-    } else {
-      const prev = window.onYouTubeIframeAPIReady;
-      window.onYouTubeIframeAPIReady = () => {
-        prev?.();
-        createPlayer();
-      };
-      if (!document.querySelector('script[src="https://www.youtube.com/iframe_api"]')) {
-        const s = document.createElement("script");
-        s.src = "https://www.youtube.com/iframe_api";
-        document.body.appendChild(s);
-      }
-    }
+    const events: (keyof WindowEventMap)[] = ["pointerdown", "touchstart", "keydown"];
+    const cleanup = () => {
+      events.forEach((event) => window.removeEventListener(event, playOnFirstGesture));
+    };
+    events.forEach((event) =>
+      window.addEventListener(event, playOnFirstGesture, { once: true, passive: true }),
+    );
 
     return () => {
-      cancelled = true;
-      cleanupGestures();
-      try {
-        playerRef.current?.destroy?.();
-      } catch {
-        /* noop */
-      }
-      playerRef.current = null;
+      cleanup();
+      audio.pause();
     };
   }, []);
 
-  function toggle() {
-    const p = playerRef.current;
-    if (!p) return;
-    if (muted) {
-      p.unMute?.();
-      p.setVolume?.(45);
-      p.playVideo?.();
-      setMuted(false);
+  async function toggle() {
+    const audio = audioRef.current;
+    if (!audio) return;
+    if (audio.paused) {
+      await audio.play();
+      setPlaying(true);
     } else {
-      p.mute?.();
-      setMuted(true);
+      audio.pause();
+      setPlaying(false);
     }
   }
 
   return (
     <>
-      <div
-        aria-hidden="true"
-        style={{ display: "none", position: "absolute", width: 0, height: 0, overflow: "hidden" }}
-      >
-        <div id="hidden-yt-audio" />
-      </div>
+      <audio ref={audioRef} src={MUSIC_SRC} preload="auto" loop aria-hidden="true" />
 
       <button
         type="button"
-        onClick={toggle}
-        disabled={!ready}
-        aria-label={muted ? "მუსიკის ჩართვა" : "მუსიკის დადუმება"}
-        className="fixed bottom-5 right-5 z-50 flex h-12 w-12 items-center justify-center rounded-full border border-parchment/30 bg-wine/95 text-parchment shadow-soft backdrop-blur transition hover:scale-105 hover:bg-wine disabled:opacity-50 sm:h-14 sm:w-14"
+        data-music-control
+        onClick={() => void toggle()}
+        aria-label={playing ? "მუსიკის გამორთვა" : "მუსიკის ჩართვა"}
+        className="fixed bottom-5 right-5 z-50 flex h-12 w-12 items-center justify-center rounded-full border border-parchment/30 bg-wine/95 text-parchment shadow-soft backdrop-blur transition hover:scale-105 hover:bg-wine sm:h-14 sm:w-14"
       >
-        {muted ? (
-          <VolumeX className="h-5 w-5" strokeWidth={1.5} />
-        ) : (
+        {playing ? (
           <Volume2 className="h-5 w-5" strokeWidth={1.5} />
+        ) : (
+          <VolumeX className="h-5 w-5" strokeWidth={1.5} />
         )}
-        {!muted && (
+        {playing && (
           <span className="pointer-events-none absolute inset-0 animate-ping rounded-full border border-parchment/40" />
         )}
       </button>

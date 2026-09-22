@@ -16,15 +16,13 @@ const coupleImg = "/images/couple-giorgi-victoria.jpg";
 
 const WEDDING_DATE = new Date("2026-10-04T16:00:00+04:00");
 
-
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "გიორგი & ვიქტორია — ქორწილის მოწვევა" },
       {
         name: "description",
-        content:
-          "გიორგი და ვიქტორია გეპატიჟებიან 4 ოქტომბერს, 2026 — განრიგი, ლოკაცია და RSVP.",
+        content: "გიორგი და ვიქტორია გეპატიჟებიან 4 ოქტომბერს, 2026 — განრიგი, ლოკაცია და RSVP.",
       },
       { property: "og:title", content: "გიორგი & ვიქტორია — 4 ოქტომბერი, 2026" },
       {
@@ -49,7 +47,9 @@ function Invitation() {
 
       <div
         className={`transition-all duration-[1600ms] ease-out ${
-          open ? "opacity-100 blur-0" : "pointer-events-none h-screen overflow-hidden opacity-70 blur-[2px]"
+          open
+            ? "opacity-100 blur-0"
+            : "pointer-events-none h-screen overflow-hidden opacity-70 blur-[2px]"
         }`}
       >
         <Hero />
@@ -59,7 +59,6 @@ function Invitation() {
         <CoupleImage />
         <Rsvp />
       </div>
-
 
       {/* Doors */}
       <div
@@ -131,11 +130,19 @@ function Hero() {
         className="absolute inset-0 h-full w-full object-cover"
       />
       <div className="relative z-10 flex flex-col items-center px-8 text-center">
-        <SparkleTitle as="p" shimmer={false} className="font-geo text-[13vw] leading-[1.1] sm:text-6xl">
+        <SparkleTitle
+          as="p"
+          shimmer={false}
+          className="font-geo text-[13vw] leading-[1.1] sm:text-6xl"
+        >
           გიორგი
         </SparkleTitle>
         <p className="my-1 font-geo text-2xl text-ink/70">&amp;</p>
-        <SparkleTitle as="p" shimmer={false} className="font-geo text-[13vw] leading-[1.1] sm:text-6xl">
+        <SparkleTitle
+          as="p"
+          shimmer={false}
+          className="font-geo text-[13vw] leading-[1.1] sm:text-6xl"
+        >
           ვიქტორია
         </SparkleTitle>
         <div className="mt-8 rounded-full bg-parchment/70 px-6 py-3 backdrop-blur-[2px]">
@@ -296,16 +303,14 @@ function EnvelopeSection() {
               }}
             />
           </div>
-
         </button>
       </div>
     </section>
   );
 }
 
-
 function Rsvp() {
-  const [sent, setSent] = useState(false);
+  const [sentMessage, setSentMessage] = useState<string | null>(null);
   return (
     <section className="bg-parchment px-6 py-20">
       <div className="mx-auto max-w-xl text-center">
@@ -320,12 +325,14 @@ function Rsvp() {
           />
         </div>
 
-        {sent ? (
-          <p className="mt-10 font-geo text-lg text-ink">
-            გმადლობთ! თქვენი პასუხი მიღებულია — მალე დაგიკავშირდებით.
-          </p>
+        {sentMessage ? (
+          <p className="mt-10 font-geo text-lg text-ink">{sentMessage}</p>
         ) : (
-          <RsvpForm onSent={() => setSent(true)} />
+          <RsvpForm
+            onSent={(attending) =>
+              setSentMessage(attending ? "გმადლობთ, გელოდებით სიყვარულით" : "მადლობა პასუხისთვის")
+            }
+          />
         )}
       </div>
     </section>
@@ -349,7 +356,7 @@ function CoupleImage() {
   );
 }
 
-function RsvpForm({ onSent }: { onSent: () => void }) {
+function RsvpForm({ onSent }: { onSent: (attending: boolean) => void }) {
   const [name, setName] = useState("");
   const [additionalGuestNames, setAdditionalGuestNames] = useState("");
   const [attendanceChoice, setAttendanceChoice] = useState("0");
@@ -393,7 +400,7 @@ function RsvpForm({ onSent }: { onSent: () => void }) {
       setError("ვერ გაიგზავნა, სცადეთ ხელახლა");
       return;
     }
-    onSent();
+    onSent(attending);
   }
 
   return (
